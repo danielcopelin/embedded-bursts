@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        <h1>Temporal Patterns</h1>
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+    </body>
+</html>
+

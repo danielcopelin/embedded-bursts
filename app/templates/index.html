@@ -3,9 +3,33 @@
         <title>{{ title }}</title>
     </head>
     <body>
-        <h1>Temporal Patterns</h1>
-        {% for table in tables %}
-            {{ table|safe }}
-        {% endfor %}
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.lat.label }}<br>
+                {{ form.lat(size=32) }}
+                {% for error in form.lat.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.lon.label }}<br>
+                {{ form.lon(size=32) }}
+                {% for error in form.lon.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
     </body>
 </html>
+
