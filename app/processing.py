@@ -35,17 +35,6 @@ def get_ifd(lat, lon):
 
 
 def get_tp(lat, lon):
-    url = f"http://embedded-bursts.herokuapp.com/temporal/{lat}/{lon}"
-    tp_df = pd.read_html(url)[0]
-    tp_df = tp_df.drop([c for c in tp_df.columns if "Unnamed" in c], axis=1)
-    tp_df.Duration = pd.to_timedelta(tp_df.Duration, unit="m")
-    tp_df.TimeStep = pd.to_timedelta(tp_df.TimeStep, unit="m")
-    tp_df.Increments = tp_df.Increments.apply(eval)
-
-    return tp_df
-
-
-def get_tp(lat, lon):
     base_url = "https://data.arr-software.org/"
     query_url = base_url + "?lon_coord={0}&lat_coord={1}&type=json&All=1"
 
