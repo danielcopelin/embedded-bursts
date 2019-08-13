@@ -100,13 +100,13 @@ def find_embedded_bursts(tp_df, ifd_df):
             event_depth = ifd_df.loc[event_duration, aep]
             event_series = pattern_series * event_depth
             for burst_duration in matching_ifd_durations:
-                burst_depth = ifd_df.loc[burst_duration, aep]
+                burst_ifd_depth = ifd_df.loc[burst_duration, aep]
                 burst_rainfall_sum = event_series.rolling(window=burst_duration).sum()
-                embedded_bursts = burst_rainfall_sum > burst_depth
+                embedded_bursts = burst_rainfall_sum > burst_ifd_depth
                 if embedded_bursts.any():
-                    burst_idxs = embedded_bursts.reset_index(drop=True)[
+                    burst_idxs = burst_rainfall_sum.reset_index(drop=True)[
                         embedded_bursts.reset_index(drop=True)
-                    ].index.tolist()
+                    ].to_dict()
                     embedded_bursts_data.append(
                         {
                             "EventID": pattern.EventID,
@@ -114,8 +114,8 @@ def find_embedded_bursts(tp_df, ifd_df):
                             "event_duration": event_duration,
                             "event_depth": event_depth,
                             "burst_duration": burst_duration,
-                            "burst_depth": burst_depth,
-                            "embedded_burst_positions": burst_idxs,
+                            "burst_ifd_depth": burst_ifd_depth,
+                            "embedded_burst_positions_and_depths": burst_idxs,
                         }
                     )
 
@@ -127,8 +127,8 @@ def find_embedded_bursts(tp_df, ifd_df):
             "event_duration",
             "event_depth",
             "burst_duration",
-            "burst_depth",
-            "embedded_burst_positions",
+            "burst_ifd_depth",
+            "embedded_burst_positions_and_depths",
         ]
     ]
     return embedded_bursts_df
